@@ -328,6 +328,8 @@ export default {
     today: '今天',
     tomorrow: '明天',
     unknown: '未知',
+    retry: '重试',
+    failedToLoad: '加载失败，请稍后重试',
     minutes: '分钟',
     time: {
       never: '从未',
@@ -752,7 +754,36 @@ export default {
         geminiCli: 'Gemini CLI',
         codexCli: 'Codex CLI',
         codexCliWs: 'Codex CLI (WebSocket)',
-        opencode: 'OpenCode'
+        opencode: 'OpenCode',
+        api: 'API'
+      },
+      apiExamples: {
+        description: '以下是通过 HTTP API 直接调用的通用示例，适用于任何支持 OpenAI 兼容格式的语言或框架。',
+        groupChat: '对话',
+        groupImage: '图像生成',
+        groupVideo: '视频生成',
+        groupAudio: '音频生成',
+        chatTitle: '对话补全',
+        imageOpenAITitle: 'GPT-Image-2',
+        imageGoogleTitle: 'Nano Banana Pro',
+        imageMJTitle: 'Midjourney',
+        videoT2VTitle: '文生视频',
+        videoI2VTitle: '图生视频',
+        videoRefTitle: '全能参考生视频',
+        videoV2VTitle: '视频转视频',
+        audioMusicTitle: '音乐生成',
+        queryTitle: '查询任务状态',
+        chatComment: '标准对话补全，支持流式输出',
+        imageOpenAIComment: 'OpenAI 格式生图',
+        imageGoogleComment: 'Google 格式生图',
+        imageMJComment: 'Midjourney 生图',
+        videoT2VComment: '纯文本生成视频，适用于: seedance-2.0, kling-v3, wan2.6-t2v, sora 等',
+        videoI2VComment: '传入首帧图片生成视频，适用于: seedance-2.0, kling-v3, wan2.6-i2v 等',
+        videoRefComment: '传入参考视频/图片控制风格与动作，适用于: seedance-2.0, kling-v3-omni',
+        videoV2VComment: '基于已有视频进行风格转换或编辑，适用于: kling-v3-omni',
+        audioMusicComment: '文本生成音乐，适用于: minimax-music',
+        queryComment: '所有 Vendor 模型通用，GET 请求轮询任务状态',
+        availableModels: '可用模型: seedance-2.0, seedance-2.0-fast, kling-v3, kling-v3-omni, wan2.6-t2v, wan2.6-i2v, veo3, sora, sora-2 等'
       },
       antigravity: {
         description: '为 Antigravity 分组配置 API 访问。请根据您使用的客户端选择对应的配置方式。',
@@ -1851,6 +1882,7 @@ export default {
         usageOpenAI: '用量 (OpenAI)',
         usageGemini: '用量 (Gemini)',
         usageAntigravity: '用量 (Antigravity)',
+        usageMuleRun: '用量 (MuleRun)',
         concurrency: '并发数',
         status: '状态',
         lastActive: '最后活跃时间',
@@ -2199,6 +2231,7 @@ export default {
         openai: 'OpenAI',
         gemini: 'Gemini',
         antigravity: 'Antigravity',
+        mulerun: 'MuleRun',
       },
       saving: '保存中...',
       noGroups: '暂无分组',
@@ -3260,6 +3293,7 @@ export default {
         anthropic: 'Anthropic',
         gemini: 'Gemini',
         antigravity: 'Antigravity',
+        mulerun: 'MuleRun',
       },
       types: {
         oauth: 'OAuth',
@@ -3269,6 +3303,7 @@ export default {
         codeAssist: 'Code Assist',
         antigravityOauth: 'Antigravity OAuth',
         antigravityApikey: '通过 Base URL + API Key 连接',
+        mulerunApikey: '通过 API Key (muk-xxx) 连接',
         upstream: '对接上游',
         upstreamDesc: '通过 Base URL + API Key 连接上游',
         api_key: 'API Key',
@@ -3789,6 +3824,11 @@ export default {
         apiKeyHint: '上游服务的 API Key',
         pleaseEnterBaseUrl: '请输入上游 Base URL',
         pleaseEnterApiKey: '请输入上游 API Key'
+      },
+      // MuleRun
+      mulerun: {
+        apiKeyRequired: '请输入 MuleRun API Key',
+        baseUrlHint: '可选，默认为 https://api.mulerun.com'
       },
       // OAuth flow
       oauth: {

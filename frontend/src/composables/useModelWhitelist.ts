@@ -79,6 +79,55 @@ const antigravityModels = [
   'tab_flash_lite_preview'
 ]
 
+// MuleRun 支持的模型（文本 + Vendor 多媒体端点）
+const mulerunModels = [
+  // ── 文本模型（Chat Completions /v1/chat/completions）──
+  // Gemini 系列
+  'gemini-3-pro-preview', 'gemini-2.5-pro', 'gemini-2.5-flash',
+  'gemini-2.5-flash-lite', 'gemini-2.5-flash-image-preview', 'gemini-2.5-flash-image',
+  // Qwen 系列
+  'qwen3-max', 'qwen-plus', 'qwen-flash', 'qwen3-vl-plus', 'qwen3-vl-flash',
+  // 智谱
+  'glm-4.6',
+  // ── 文本模型（Anthropic /v1/messages — 需要高级套餐）──
+  'claude-sonnet-4-6', 'claude-opus-4-6', 'claude-haiku-4-5',
+  // ── 文本模型（Responses API /v1/responses）──
+  'gpt-5.4', 'gpt-5.2', 'gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-5-codex',
+  // ── Vendor: Alibaba 系列（/vendors/alibaba/v1/...）──
+  'alibaba/happy-horse-1-0-t2v/generation', 'alibaba/happy-horse-1-0-i2v/generation',
+  'alibaba/wan2.6-t2v/generation', 'alibaba/wan2.6-t2i/generation',
+  'alibaba/wan2.6-image/generation', 'alibaba/wan2.6-i2v/generation',
+  'alibaba/wan2.5-t2v-preview/generation', 'alibaba/wan2.5-t2i-preview/generation',
+  'alibaba/wan2.5-i2v-preview/generation', 'alibaba/wan2.5-i2i-preview/generation',
+  'alibaba/wan2.2-t2v-plus/generation', 'alibaba/wan2.2-i2v-plus/generation', 'alibaba/wan2.2-i2v-flash/generation',
+  'alibaba/wan2.1-vace-plus/generation', 'alibaba/wan2.1-kf2v-plus/generation',
+  // ── Vendor: ByteDance Seedance 系列 ──
+  'bytedance/seedance-2.0/text-to-video',
+  'bytedance/seedance-2.0/image-to-video',
+  'bytedance/seedance-2.0/reference-to-video',
+  'bytedance/seedance-2.0-fast/text-to-video',
+  'bytedance/seedance-2.0-fast/image-to-video',
+  'bytedance/seedance-2.0-fast/reference-to-video',
+  // ── Vendor: Google 系列 ──
+  'google/veo3/generation',
+  'google/nano-banana-pro/generation', 'google/nano-banana-pro/edit',
+  'google/nano-banana-2/generation', 'google/nano-banana-2/edit',
+  'google/nano-banana/generation', 'google/nano-banana/edit',
+  // ── Vendor: KlingAI 系列 ──
+  'klingai/kling-v3-t2v/generation', 'klingai/kling-v3-i2v/generation',
+  'klingai/kling-v3-omni-t2v/generation', 'klingai/kling-v3-omni-i2v/generation',
+  'klingai/kling-v3-omni-ref2v/generation', 'klingai/kling-v3-omni-v2v/generation',
+  'klingai/kling-v3-omni-v2v-edit/generation',
+  // ── Vendor: Midjourney ──
+  'midjourney/diffusion/generation', 'midjourney/video/generation',
+  // ── Vendor: MiniMax ──
+  'minimax/music-2.5/generation', 'minimax/music-2.0/generation',
+  'minimax/speech-2.8-hd/generation', 'minimax/speech-2.8-turbo/generation',
+  // ── Vendor: OpenAI ──
+  'openai/sora/generation', 'openai/sora-2/generation',
+  'openai/gpt-image-2/generation', 'openai/gpt-image-2/edit'
+]
+
 // 智谱 GLM
 const zhipuModels = [
   'glm-4', 'glm-4v', 'glm-4-plus', 'glm-4-0520',
@@ -209,6 +258,8 @@ const allModelsList: string[] = [
   ...openaiModels,
   ...claudeModels,
   ...geminiModels,
+  ...antigravityModels,
+  ...mulerunModels,
   ...zhipuModels,
   ...qwenModels,
   ...deepseekModels,
@@ -315,6 +366,41 @@ const bedrockPresetMappings = [
   { label: 'Haiku 4.5', from: 'claude-haiku-4-5', to: 'us.anthropic.claude-haiku-4-5-20251001-v1:0', color: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' },
 ]
 
+// MuleRun 预设映射（文本模型 + Vendor 多媒体端点）
+const mulerunPresetMappings = [
+  // ── Chat Completions 文本模型 ──
+  { label: 'Gemini 2.5 Pro', from: 'gemini-2.5-pro', to: 'gemini-2.5-pro', color: 'bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400' },
+  { label: 'Gemini 2.5 Flash', from: 'gemini-2.5-flash', to: 'gemini-2.5-flash', color: 'bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400' },
+  { label: 'Qwen3 Max', from: 'qwen3-max', to: 'qwen3-max', color: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400' },
+  { label: 'Qwen Flash', from: 'qwen-flash', to: 'qwen-flash', color: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400' },
+  { label: 'GLM 4.6', from: 'glm-4.6', to: 'glm-4.6', color: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400' },
+  // ── Claude 系列（高级套餐）──
+  { label: 'Claude Sonnet 4.6', from: 'claude-sonnet-4-6', to: 'claude-sonnet-4-6', color: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-900/30 dark:text-cyan-400' },
+  { label: 'Claude Opus 4.6', from: 'claude-opus-4-6', to: 'claude-opus-4-6', color: 'bg-pink-100 text-pink-700 hover:bg-pink-200 dark:bg-pink-900/30 dark:text-pink-400' },
+  { label: 'Claude Haiku 4.5', from: 'claude-haiku-4-5', to: 'claude-haiku-4-5', color: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-400' },
+  // ── Responses API（GPT 系列）──
+  { label: 'GPT-5.4', from: 'gpt-5.4', to: 'gpt-5.4', color: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' },
+  { label: 'GPT-5 Mini', from: 'gpt-5-mini', to: 'gpt-5-mini', color: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' },
+  // ── 视频生成 ──
+  { label: 'Wan2.6 T2V', from: 'alibaba/wan2.6-t2v/generation', to: 'alibaba/wan2.6-t2v/generation', color: 'bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/30 dark:text-sky-400' },
+  { label: 'Wan2.6 T2I', from: 'alibaba/wan2.6-t2i/generation', to: 'alibaba/wan2.6-t2i/generation', color: 'bg-teal-100 text-teal-700 hover:bg-teal-200 dark:bg-teal-900/30 dark:text-teal-400' },
+  { label: 'Happy Horse T2V', from: 'alibaba/happy-horse-1-0-t2v/generation', to: 'alibaba/happy-horse-1-0-t2v/generation', color: 'bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/30 dark:text-sky-400' },
+  { label: 'Veo 3', from: 'google/veo3/generation', to: 'google/veo3/generation', color: 'bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400' },
+  { label: 'Seedance 2.0 T2V', from: 'bytedance/seedance-2.0/text-to-video', to: 'bytedance/seedance-2.0/text-to-video', color: 'bg-rose-100 text-rose-700 hover:bg-rose-200 dark:bg-rose-900/30 dark:text-rose-400' },
+  { label: 'Kling V3 T2V', from: 'klingai/kling-v3-t2v/generation', to: 'klingai/kling-v3-t2v/generation', color: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-400' },
+  { label: 'Kling V3 Omni T2V', from: 'klingai/kling-v3-omni-t2v/generation', to: 'klingai/kling-v3-omni-t2v/generation', color: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-400' },
+  { label: 'Sora', from: 'openai/sora/generation', to: 'openai/sora/generation', color: 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-900/30 dark:text-slate-400' },
+  { label: 'Midjourney Video', from: 'midjourney/video/generation', to: 'midjourney/video/generation', color: 'bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-900/30 dark:text-violet-400' },
+  // ── 图像生成 ──
+  { label: 'Nano Banana Pro', from: 'google/nano-banana-pro/generation', to: 'google/nano-banana-pro/generation', color: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  { label: 'Nano Banana 2', from: 'google/nano-banana-2/generation', to: 'google/nano-banana-2/generation', color: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  { label: 'Midjourney Diffusion', from: 'midjourney/diffusion/generation', to: 'midjourney/diffusion/generation', color: 'bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-900/30 dark:text-violet-400' },
+  { label: 'GPT Image 2', from: 'openai/gpt-image-2/generation', to: 'openai/gpt-image-2/generation', color: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' },
+  // ── 音频生成 ──
+  { label: 'MiniMax Music 2.5', from: 'minimax/music-2.5/generation', to: 'minimax/music-2.5/generation', color: 'bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 dark:bg-fuchsia-900/30 dark:text-fuchsia-400' },
+  { label: 'MiniMax Speech HD', from: 'minimax/speech-2.8-hd/generation', to: 'minimax/speech-2.8-hd/generation', color: 'bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 dark:bg-fuchsia-900/30 dark:text-fuchsia-400' },
+]
+
 // Antigravity 默认映射（从后端 API 获取，与 constants.go 保持一致）
 // 使用 fetchAntigravityDefaultMappings() 异步获取
 import { getAntigravityDefaultModelMapping } from '@/api/admin/accounts'
@@ -361,6 +447,7 @@ export function getModelsByPlatform(platform: string): string[] {
     case 'claude': return claudeModels
     case 'gemini': return geminiModels
     case 'antigravity': return antigravityModels
+    case 'mulerun': return mulerunModels
     case 'zhipu': return zhipuModels
     case 'qwen': return qwenModels
     case 'deepseek': return deepseekModels
@@ -385,6 +472,7 @@ export function getPresetMappingsByPlatform(platform: string) {
   if (platform === 'openai') return openaiPresetMappings
   if (platform === 'gemini') return geminiPresetMappings
   if (platform === 'antigravity') return antigravityPresetMappings
+  if (platform === 'mulerun') return mulerunPresetMappings
   if (platform === 'bedrock') return bedrockPresetMappings
   return anthropicPresetMappings
 }

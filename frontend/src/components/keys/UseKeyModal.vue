@@ -72,8 +72,37 @@
           </nav>
         </div>
 
-        <!-- Code Blocks (Stacked for multi-file platforms) -->
-        <div class="space-y-4">
+        <!-- API Tab: Code blocks for selected capability -->
+        <div v-if="activeClientTab === 'api'" class="space-y-3">
+          <template v-for="(group, gi) in apiExampleGroups" :key="gi">
+            <div v-for="(file, fi) in group.files" :key="`${gi}-${fi}`" class="relative">
+              <div class="bg-gray-900 dark:bg-dark-900 rounded-xl overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 bg-gray-800 dark:bg-dark-800 border-b border-gray-700 dark:border-dark-700">
+                  <span class="text-xs text-gray-400 font-mono">{{ file.path }}</span>
+                  <button
+                    @click="copyContent(file.content, gi * 100 + fi)"
+                    class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg transition-colors"
+                    :class="copiedIndex === gi * 100 + fi
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'"
+                  >
+                    <svg v-if="copiedIndex === gi * 100 + fi" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                    </svg>
+                    {{ copiedIndex === gi * 100 + fi ? t('keys.useKeyModal.copied') : t('keys.useKeyModal.copy') }}
+                  </button>
+                </div>
+                <pre class="p-4 text-sm font-mono text-gray-100 overflow-x-auto"><code v-text="file.content"></code></pre>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Other Tabs: Flat code blocks -->
+        <div v-else class="space-y-4">
           <div
             v-for="(file, index) in currentFiles"
             :key="index"
@@ -166,6 +195,12 @@ interface FileConfig {
   highlighted?: string
 }
 
+interface ApiExampleGroup {
+  title: string
+  emoji: string
+  files: FileConfig[]
+}
+
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
@@ -196,8 +231,8 @@ watch(() => props.platform, () => {
 }, { immediate: true })
 
 // Reset shell tab when client changes
-watch(activeClientTab, () => {
-  activeTab.value = 'unix'
+watch(activeClientTab, (tab) => {
+  activeTab.value = tab === 'api' ? 'chat' : 'unix'
 })
 
 // Icon components
@@ -263,6 +298,61 @@ const SparkleIcon = {
   }
 }
 
+// Code icon for API tab
+const CodeIcon = {
+  render() {
+    return h('svg', {
+      fill: 'none',
+      stroke: 'currentColor',
+      viewBox: '0 0 24 24',
+      'stroke-width': '1.5',
+      class: 'w-4 h-4'
+    }, [
+      h('path', {
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        d: 'M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5'
+      })
+    ])
+  }
+}
+
+// Chat bubble icon
+const ChatIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-4 h-4' }, [
+      h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.2 48.2 0 0 0 5.833-.39c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.4 48.4 0 0 0 11.25 3c-2.114 0-4.182.137-6.186.369C3.373 3.602 2.25 4.995 2.25 6.597v6.914Z' })
+    ])
+  }
+}
+
+// Image icon
+const ImageIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-4 h-4' }, [
+      h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'm2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21ZM12 9h.01' })
+    ])
+  }
+}
+
+// Video icon
+const VideoIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-4 h-4' }, [
+      h('path', { 'stroke-linecap': 'round', 'd': 'M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z' })
+    ])
+  }
+}
+
+// Audio/music icon
+const AudioIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-4 h-4' }, [
+      h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z' })
+    ])
+  }
+}
+
 const clientTabs = computed((): TabConfig[] => {
   if (!props.platform) return []
   switch (props.platform) {
@@ -275,23 +365,27 @@ const clientTabs = computed((): TabConfig[] => {
         tabs.push({ id: 'claude', label: t('keys.useKeyModal.cliTabs.claudeCode'), icon: TerminalIcon })
       }
       tabs.push({ id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon })
+      tabs.push({ id: 'api', label: t('keys.useKeyModal.cliTabs.api'), icon: CodeIcon })
       return tabs
     }
     case 'gemini':
       return [
         { id: 'gemini', label: t('keys.useKeyModal.cliTabs.geminiCli'), icon: SparkleIcon },
-        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon }
+        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon },
+        { id: 'api', label: t('keys.useKeyModal.cliTabs.api'), icon: CodeIcon }
       ]
     case 'antigravity':
       return [
         { id: 'claude', label: t('keys.useKeyModal.cliTabs.claudeCode'), icon: TerminalIcon },
         { id: 'gemini', label: t('keys.useKeyModal.cliTabs.geminiCli'), icon: SparkleIcon },
-        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon }
+        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon },
+        { id: 'api', label: t('keys.useKeyModal.cliTabs.api'), icon: CodeIcon }
       ]
     default:
       return [
         { id: 'claude', label: t('keys.useKeyModal.cliTabs.claudeCode'), icon: TerminalIcon },
-        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon }
+        { id: 'opencode', label: t('keys.useKeyModal.cliTabs.opencode'), icon: TerminalIcon },
+        { id: 'api', label: t('keys.useKeyModal.cliTabs.api'), icon: CodeIcon }
       ]
   }
 })
@@ -309,10 +403,19 @@ const openaiTabs: TabConfig[] = [
   { id: 'windows', label: 'Windows', icon: WindowsIcon }
 ]
 
+// API capability tabs
+const apiTabs: TabConfig[] = [
+  { id: 'chat', label: 'Chat', icon: ChatIcon },
+  { id: 'image', label: 'Image', icon: ImageIcon },
+  { id: 'video', label: 'Video', icon: VideoIcon },
+  { id: 'audio', label: 'Audio', icon: AudioIcon }
+]
+
 const showShellTabs = computed(() => activeClientTab.value !== 'opencode')
 
 const currentTabs = computed(() => {
   if (!showShellTabs.value) return []
+  if (activeClientTab.value === 'api') return apiTabs
   if (activeClientTab.value === 'codex' || activeClientTab.value === 'codex-ws') {
     return openaiTabs
   }
@@ -325,12 +428,24 @@ const platformDescription = computed(() => {
       if (activeClientTab.value === 'claude') {
         return t('keys.useKeyModal.description')
       }
+      if (activeClientTab.value === 'api') {
+        return t('keys.useKeyModal.apiExamples.description')
+      }
       return t('keys.useKeyModal.openai.description')
     case 'gemini':
+      if (activeClientTab.value === 'api') {
+        return t('keys.useKeyModal.apiExamples.description')
+      }
       return t('keys.useKeyModal.gemini.description')
     case 'antigravity':
+      if (activeClientTab.value === 'api') {
+        return t('keys.useKeyModal.apiExamples.description')
+      }
       return t('keys.useKeyModal.antigravity.description')
     default:
+      if (activeClientTab.value === 'api') {
+        return t('keys.useKeyModal.apiExamples.description')
+      }
       return t('keys.useKeyModal.description')
   }
 })
@@ -355,7 +470,7 @@ const platformNote = computed(() => {
   }
 })
 
-const showPlatformNote = computed(() => activeClientTab.value !== 'opencode')
+const showPlatformNote = computed(() => activeClientTab.value !== 'opencode' && activeClientTab.value !== 'api')
 
 const escapeHtml = (value: string) => value
   .replace(/&/g, '&amp;')
@@ -394,6 +509,10 @@ const currentFiles = computed((): FileConfig[] => {
     return trimmed.endsWith('/v1beta') ? trimmed : `${trimmed}/v1beta`
   })()
 
+  if (activeClientTab.value === 'api') {
+    return [] // API tab uses apiExampleGroups, not currentFiles
+  }
+
   if (activeClientTab.value === 'opencode') {
     switch (props.platform) {
       case 'anthropic':
@@ -431,6 +550,13 @@ const currentFiles = computed((): FileConfig[] => {
     default:
       return generateAnthropicFiles(baseUrl, apiKey)
   }
+})
+
+// API tab grouped examples
+const apiExampleGroups = computed<ApiExampleGroup[]>(() => {
+  if (activeClientTab.value !== 'api' || !props.apiKey) return []
+  const baseUrl = props.baseUrl || window.location.origin
+  return generateApiExamples(baseUrl, props.apiKey, activeTab.value)
 })
 
 function generateAnthropicFiles(baseUrl: string, apiKey: string): FileConfig[] {
@@ -1049,6 +1175,176 @@ function generateOpenCodeConfig(platform: string, baseUrl: string, apiKey: strin
     path: pathLabel ?? 'opencode.json',
     content,
     hint: t('keys.useKeyModal.opencode.hint')
+  }
+}
+
+function generateApiExamples(baseRoot: string, apiKey: string, category: string): ApiExampleGroup[] {
+  const apiBase = `${baseRoot}/v1`
+  const auth = `Authorization: Bearer ${apiKey}`
+  const p = 'keys.useKeyModal.apiExamples'
+  const k = (key: string) => t(`${p}.${key}`)
+
+  switch (category) {
+    case 'chat':
+      return [{
+        title: k('groupChat'),
+        emoji: '💬',
+        files: [{
+          path: `${k('chatTitle')} — cURL`,
+          content: `# ${k('chatComment')}
+curl ${apiBase}/chat/completions \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "messages": [{"role": "user", "content": "Hello!"}],
+    "stream": true
+  }'`
+        }]
+      }]
+
+    case 'image':
+      return [{
+        title: k('groupImage'),
+        emoji: '🖼️',
+        files: [
+          {
+            path: `${k('imageOpenAITitle')} — cURL`,
+            content: `# ${k('imageOpenAIComment')}
+curl ${apiBase}/images/generations \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "A cute cat wearing a wizard hat",
+    "size": "1024x1024",
+    "quality": "high"
+  }'`
+          },
+          {
+            path: `${k('imageGoogleTitle')} — cURL`,
+            content: `# ${k('imageGoogleComment')}
+curl ${baseRoot}/vendors/google/v1/nano-banana-pro/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "nano-banana-pro",
+    "content": [{"type": "text", "text": "A watercolor painting of a sunset over the ocean"}]
+  }'`
+          },
+          {
+            path: `${k('imageMJTitle')} — cURL`,
+            content: `# ${k('imageMJComment')}
+curl ${baseRoot}/vendors/midjourney/v1/tob/diffusion \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "midjourney",
+    "content": [{"type": "text", "text": "A futuristic city skyline at night, cyberpunk style --ar 16:9"}]
+  }'`
+          }
+        ]
+      }]
+
+    case 'video':
+      return [{
+        title: k('groupVideo'),
+        emoji: '🎬',
+        files: [
+          {
+            path: `${k('videoT2VTitle')} — cURL`,
+            content: `# ${k('videoT2VComment')}
+curl ${baseRoot}/vendors/bytedance/v1/seedance-2.0/text-to-video/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {"type": "text", "text": "A golden retriever running on the beach at sunset"}
+    ],
+    "resolution": "1080p",
+    "duration": 5
+  }'`
+          },
+          {
+            path: `${k('videoI2VTitle')} — cURL`,
+            content: `# ${k('videoI2VComment')}
+curl ${baseRoot}/vendors/bytedance/v1/seedance-2.0/image-to-video/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {"type": "text", "text": "The cat slowly turns its head and smiles"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/first-frame.jpg"}, "role": "first_frame"}
+    ],
+    "resolution": "1080p",
+    "duration": 5
+  }'`
+          },
+          {
+            path: `${k('videoRefTitle')} — cURL`,
+            content: `# ${k('videoRefComment')}
+curl ${baseRoot}/vendors/bytedance/v1/seedance-2.0/reference-to-video/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {"type": "text", "text": "A person doing a dance move in a studio"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/reference.jpg"}, "role": "reference_image"}
+    ],
+    "resolution": "1080p",
+    "duration": 5
+  }'`
+          },
+          {
+            path: `${k('videoV2VTitle')} — cURL`,
+            content: `# ${k('videoV2VComment')}
+curl ${baseRoot}/vendors/klingai/v1/kling-v3-omni/video-to-video/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "kling-v3-omni",
+    "content": [
+      {"type": "text", "text": "Transform to anime style"},
+      {"type": "video_url", "video_url": {"url": "https://example.com/input.mp4"}, "role": "reference_video"}
+    ],
+    "resolution": "1080p"
+  }'`
+          },
+          {
+            path: `${k('queryTitle')} — cURL`,
+            content: `# ${k('queryComment')}
+# 将 {task_id} 替换为创建任务时返回的 id
+curl ${baseRoot}/vendors/bytedance/v1/seedance-2.0/text-to-video/generation/{task_id} \\
+  -H "${auth}"
+
+# 响应示例:
+# {
+#   "id": "task-xxx",
+#   "status": "succeeded",         // queued | running | succeeded | failed
+#   "content": {
+#     "video_url": "https://..."   // 生成完成后的视频 URL
+#   },
+#   "usage": {"completion_tokens": 100, "total_tokens": 100}
+# }`
+          }
+        ]
+      }]
+
+    case 'audio':
+      return [{
+        title: k('groupAudio'),
+        emoji: '🎵',
+        files: [{
+          path: `${k('audioMusicTitle')} — cURL`,
+          content: `# ${k('audioMusicComment')}
+curl ${baseRoot}/vendors/minimax/v1/music-2.5/text-to-music/generation \\
+  -H "${auth}" -H "Content-Type: application/json" \\
+  -d '{
+    "model": "minimax-music",
+    "content": [
+      {"type": "text", "text": "An upbeat electronic dance track with heavy bass and synth leads, 128 BPM"}
+    ]
+  }'`
+        }]
+      }]
+
+    default:
+      return []
   }
 }
 

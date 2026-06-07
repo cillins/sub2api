@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/Wei-Shaw/sub2api/internal/config"
 	"github.com/Wei-Shaw/sub2api/internal/handler"
@@ -42,11 +43,18 @@ func RegisterGatewayRoutes(
 	{
 		// /v1/messages: auto-route based on group platform
 		gateway.POST("/messages", func(c *gin.Context) {
-			if getGroupPlatform(c) == service.PlatformOpenAI {
+			switch getGroupPlatform(c) {
+			case service.PlatformOpenAI:
 				h.OpenAIGateway.Messages(c)
-				return
+			case service.PlatformMuleRun:
+				if h.MuleRunGateway != nil {
+					h.MuleRunGateway.Messages(c)
+				} else {
+					h.Gateway.Messages(c)
+				}
+			default:
+				h.Gateway.Messages(c)
 			}
-			h.Gateway.Messages(c)
 		})
 		// /v1/messages/count_tokens: OpenAI groups get 404
 		gateway.POST("/messages/count_tokens", func(c *gin.Context) {
@@ -83,11 +91,18 @@ func RegisterGatewayRoutes(
 		gateway.GET("/responses", h.OpenAIGateway.ResponsesWebSocket)
 		// OpenAI Chat Completions API: auto-route based on group platform
 		gateway.POST("/chat/completions", func(c *gin.Context) {
-			if getGroupPlatform(c) == service.PlatformOpenAI {
+			switch getGroupPlatform(c) {
+			case service.PlatformOpenAI:
 				h.OpenAIGateway.ChatCompletions(c)
-				return
+			case service.PlatformMuleRun:
+				if h.MuleRunGateway != nil {
+					h.MuleRunGateway.ChatCompletions(c)
+				} else {
+					h.Gateway.ChatCompletions(c)
+				}
+			default:
+				h.Gateway.ChatCompletions(c)
 			}
-			h.Gateway.ChatCompletions(c)
 		})
 		gateway.POST("/embeddings", func(c *gin.Context) {
 			if getGroupPlatform(c) != service.PlatformOpenAI {
@@ -165,11 +180,18 @@ func RegisterGatewayRoutes(
 	}
 	// OpenAI Chat Completions API（不带v1前缀的别名）— auto-route based on group platform
 	r.POST("/chat/completions", bodyLimit, clientRequestID, opsErrorLogger, endpointNorm, gin.HandlerFunc(apiKeyAuth), requireGroupAnthropic, func(c *gin.Context) {
-		if getGroupPlatform(c) == service.PlatformOpenAI {
+		switch getGroupPlatform(c) {
+		case service.PlatformOpenAI:
 			h.OpenAIGateway.ChatCompletions(c)
-			return
+		case service.PlatformMuleRun:
+			if h.MuleRunGateway != nil {
+				h.MuleRunGateway.ChatCompletions(c)
+			} else {
+				h.Gateway.ChatCompletions(c)
+			}
+		default:
+			h.Gateway.ChatCompletions(c)
 		}
-		h.Gateway.ChatCompletions(c)
 	})
 	r.POST("/embeddings", bodyLimit, clientRequestID, opsErrorLogger, endpointNorm, gin.HandlerFunc(apiKeyAuth), requireGroupAnthropic, func(c *gin.Context) {
 		if getGroupPlatform(c) != service.PlatformOpenAI {
@@ -242,6 +264,147 @@ func RegisterGatewayRoutes(
 		antigravityV1Beta.GET("/models", h.Gateway.GeminiV1BetaListModels)
 		antigravityV1Beta.GET("/models/:model", h.Gateway.GeminiV1BetaGetModel)
 		antigravityV1Beta.POST("/models/*modelAction", h.Gateway.GeminiV1BetaModels)
+	}
+
+	// ─── MuleRun 专用路由 ─────────────────────────────────────────
+	// Vendor API (图片/视频/音频生成等异步任务端点)
+	// 仅在配置了 MuleRunGateway 时注册
+	if h.MuleRunGateway != nil {
+		vendors := r.Group("/vendors")
+		vendors.Use(bodyLimit)
+		vendors.Use(clientRequestID)
+		vendors.Use(opsErrorLogger)
+		vendors.Use(endpointNorm)
+		vendors.Use(gin.HandlerFunc(apiKeyAuth))
+		vendors.Use(requireGroupAnthropic)
+		{
+			// POST /vendors/:provider/v1/:model/:action — 创建任务
+			vendors.POST("/*path", func(c *gin.Context) {
+				if getGroupPlatform(c) == service.PlatformMuleRun {
+					h.MuleRunGateway.Vendor(c)
+					return
+				}
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": gin.H{
+						"type":    "not_found_error",
+						"message": "Vendor API is only supported for MuleRun platform groups",
+					},
+				})
+			})
+			// GET /vendors/:provider/v1/:model/:action/:taskId — 轮询任务状态
+			vendors.GET("/*path", func(c *gin.Context) {
+				if getGroupPlatform(c) == service.PlatformMuleRun {
+					h.MuleRunGateway.Vendor(c)
+					return
+				}
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": gin.H{
+						"type":    "not_found_error",
+						"message": "Vendor API is only supported for MuleRun platform groups",
+					},
+				})
+			})
+		}
+
+		// ─── Seedance 多媒体 API（仅 MuleRun 平台）────────────────────
+		// 使用火山方舟 Seedance 格式作为请求/响应标准
+		// POST /v1/seedance/contents/generations/tasks     — 创建多媒体生成任务
+		// GET  /v1/seedance/contents/generations/tasks/:id — 查询任务状态
+		seedanceMediaTasks := r.Group("/v1/seedance/contents/generations/tasks")
+		seedanceMediaTasks.Use(bodyLimit)
+		seedanceMediaTasks.Use(clientRequestID)
+		seedanceMediaTasks.Use(opsErrorLogger)
+		seedanceMediaTasks.Use(endpointNorm)
+		seedanceMediaTasks.Use(gin.HandlerFunc(apiKeyAuth))
+		seedanceMediaTasks.Use(requireGroupAnthropic)
+		{
+			seedanceMediaTasks.POST("", func(c *gin.Context) {
+				if getGroupPlatform(c) == service.PlatformMuleRun {
+					h.MuleRunGateway.VendorMediaCreateTask(c)
+					return
+				}
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": gin.H{
+						"type":    "not_found_error",
+						"message": "Seedance Multimedia API is only supported for MuleRun platform groups",
+					},
+				})
+			})
+			seedanceMediaTasks.GET("/:id", func(c *gin.Context) {
+				if getGroupPlatform(c) == service.PlatformMuleRun {
+					h.MuleRunGateway.VendorMediaQueryTask(c)
+					return
+				}
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": gin.H{
+						"type":    "not_found_error",
+						"message": "Seedance Multimedia API is only supported for MuleRun platform groups",
+					},
+				})
+			})
+		}
+
+		// ─── OpenAI Image API（仅 MuleRun 平台）───────────────────────
+		// 使用 OpenAI Image API 格式，内部自动轮询 MuleRun 异步任务
+		// POST /v1/openai/images/generations — 生成图片
+		openAIImages := r.Group("/v1/openai/images")
+		openAIImages.Use(bodyLimit)
+		openAIImages.Use(clientRequestID)
+		openAIImages.Use(opsErrorLogger)
+		openAIImages.Use(endpointNorm)
+		openAIImages.Use(gin.HandlerFunc(apiKeyAuth))
+		openAIImages.Use(requireGroupAnthropic)
+		{
+			openAIImages.POST("/generations", func(c *gin.Context) {
+				if getGroupPlatform(c) == service.PlatformMuleRun {
+					h.MuleRunGateway.OpenAICreateImage(c)
+					return
+				}
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": gin.H{
+						"type":    "not_found_error",
+						"message": "OpenAI Image API (MuleRun) is only supported for MuleRun platform groups",
+					},
+				})
+			})
+		}
+		// ─── Google Multimedia API（仅 MuleRun 平台）──────────────────────
+		// 使用 Google Gemini 格式，内部自动轮询 MuleRun 异步任务
+		// POST /v1/google/models/{model}:predictLongRunning — 生成视频 (Veo)
+		// POST /v1/google/models/{model}:generateContent   — 生成图片 (Nano Banana)
+		googleMedia := r.Group("/v1/google/models")
+		googleMedia.Use(bodyLimit)
+		googleMedia.Use(clientRequestID)
+		googleMedia.Use(opsErrorLogger)
+		googleMedia.Use(endpointNorm)
+		googleMedia.Use(gin.HandlerFunc(apiKeyAuth))
+		googleMedia.Use(requireGroupAnthropic)
+		{
+			googleMedia.POST("/*modelAction", func(c *gin.Context) {
+				if getGroupPlatform(c) != service.PlatformMuleRun {
+					c.JSON(http.StatusNotFound, gin.H{
+						"error": gin.H{
+							"type":    "not_found_error",
+							"message": "Google Multimedia API is only supported for MuleRun platform groups",
+						},
+					})
+					return
+				}
+				modelAction := c.Param("modelAction")
+				if strings.HasSuffix(modelAction, ":predictLongRunning") {
+					h.MuleRunGateway.GoogleCreateVideo(c)
+				} else if strings.HasSuffix(modelAction, ":generateContent") {
+					h.MuleRunGateway.GoogleCreateImage(c)
+				} else {
+					c.JSON(http.StatusNotFound, gin.H{
+						"error": gin.H{
+							"type":    "not_found_error",
+							"message": "Unsupported action. Use :predictLongRunning for video or :generateContent for images",
+						},
+					})
+				}
+			})
+		}
 	}
 
 }

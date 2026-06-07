@@ -136,3 +136,4 @@ docs/*
 frontend/coverage/
 aicodex
 output/
+frontend/lobe-icons-data.json

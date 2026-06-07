@@ -22,6 +22,7 @@ const (
 	EndpointImagesGenerations = "/v1/images/generations"
 	EndpointImagesEdits       = "/v1/images/edits"
 	EndpointGeminiModels      = "/v1beta/models"
+	EndpointVendors           = "/vendors"
 )
 
 // gin.Context keys used by the middleware and helpers below.
@@ -57,6 +58,8 @@ func NormalizeInboundEndpoint(path string) string {
 		return EndpointResponses
 	case strings.Contains(path, EndpointGeminiModels):
 		return EndpointGeminiModels
+	case strings.HasPrefix(path, "/vendors"):
+		return path // preserve full vendor path
 	default:
 		return path
 	}
@@ -98,6 +101,13 @@ func DeriveUpstreamEndpoint(inbound, rawRequestPath, platform string) string {
 		// Antigravity accounts serve both Claude and Gemini.
 		if inbound == EndpointGeminiModels {
 			return EndpointGeminiModels
+		}
+		return EndpointMessages
+
+	case service.PlatformMuleRun:
+		// MuleRun serves text via /v1/messages and media via /vendors/*
+		if strings.HasPrefix(rawRequestPath, "/vendors") || strings.Contains(inbound, EndpointVendors) {
+			return inbound // preserve original vendor path
 		}
 		return EndpointMessages
 	}

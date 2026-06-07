@@ -328,6 +328,8 @@ export default {
     today: 'Today',
     tomorrow: 'Tomorrow',
     unknown: 'Unknown',
+    retry: 'Retry',
+    failedToLoad: 'Failed to load, please try again later',
     minutes: 'min',
     time: {
       never: 'Never',
@@ -753,6 +755,35 @@ export default {
         codexCli: 'Codex CLI',
         codexCliWs: 'Codex CLI (WebSocket)',
         opencode: 'OpenCode',
+        api: 'API'
+      },
+      apiExamples: {
+        description: 'Generic examples using the HTTP API directly, compatible with any language or framework that supports the OpenAI format.',
+        groupChat: 'Chat',
+        groupImage: 'Image Generation',
+        groupVideo: 'Video Generation',
+        groupAudio: 'Audio Generation',
+        chatTitle: 'Chat Completions',
+        imageOpenAITitle: 'GPT-Image-2',
+        imageGoogleTitle: 'Nano Banana Pro',
+        imageMJTitle: 'Midjourney',
+        videoT2VTitle: 'Text-to-Video',
+        videoI2VTitle: 'Image-to-Video',
+        videoRefTitle: 'Reference-to-Video',
+        videoV2VTitle: 'Video-to-Video',
+        audioMusicTitle: 'Music Generation',
+        queryTitle: 'Query Task Status',
+        chatComment: 'Standard chat completions with streaming support',
+        imageOpenAIComment: 'OpenAI format image generation',
+        imageGoogleComment: 'Google format image generation',
+        imageMJComment: 'Midjourney image generation',
+        videoT2VComment: 'Text-to-video, for: seedance-2.0, kling-v3, wan2.6-t2v, sora etc.',
+        videoI2VComment: 'Image-to-video, for: seedance-2.0, kling-v3, wan2.6-i2v etc.',
+        videoRefComment: 'Reference video/image to control style and motion, for: seedance-2.0, kling-v3-omni',
+        videoV2VComment: 'Style transfer or edit based on existing video, for: kling-v3-omni',
+        audioMusicComment: 'Text-to-music, for: minimax-music',
+        queryComment: 'Universal for all Vendor models, GET request to poll task status',
+        availableModels: 'Available: seedance-2.0, seedance-2.0-fast, kling-v3, kling-v3-omni, wan2.6-t2v, wan2.6-i2v, veo3, sora, sora-2 etc.'
       },
       antigravity: {
         description: 'Configure API access for Antigravity group. Select the configuration method based on your client.',
@@ -1830,6 +1861,7 @@ export default {
         usageOpenAI: 'Usage (OpenAI)',
         usageGemini: 'Usage (Gemini)',
         usageAntigravity: 'Usage (Antigravity)',
+        usageMuleRun: 'Usage (MuleRun)',
         concurrency: 'Concurrency',
         status: 'Status',
         lastActive: 'Last Active',
@@ -2171,6 +2203,7 @@ export default {
         openai: 'OpenAI',
         gemini: 'Gemini',
         antigravity: 'Antigravity',
+        mulerun: 'MuleRun',
       },
       deleteConfirm:
         "Are you sure you want to delete '{name}'? All associated API keys will no longer belong to any group.",
@@ -3073,6 +3106,7 @@ export default {
         openai: 'OpenAI',
         gemini: 'Gemini',
         antigravity: 'Antigravity',
+        mulerun: 'MuleRun',
       },
       types: {
         oauth: 'OAuth',
@@ -3082,6 +3116,7 @@ export default {
         codeAssist: 'Code Assist',
         antigravityOauth: 'Antigravity OAuth',
         antigravityApikey: 'Connect via Base URL + API Key',
+        mulerunApikey: 'Connect via API Key (muk-xxx)',
         upstream: 'Upstream',
         upstreamDesc: 'Connect via Base URL + API Key'
       },
@@ -3651,6 +3686,11 @@ export default {
         apiKeyHint: 'API Key for the upstream service',
         pleaseEnterBaseUrl: 'Please enter upstream Base URL',
         pleaseEnterApiKey: 'Please enter upstream API Key'
+      },
+      // MuleRun
+      mulerun: {
+        apiKeyRequired: 'Please enter MuleRun API Key',
+        baseUrlHint: 'Optional. Defaults to https://api.mulerun.com'
       },
       // OAuth flow
       oauth: {
