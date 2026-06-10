@@ -1430,7 +1430,7 @@ export default {
     // Dashboard
     dashboard: {
       title: 'Admin Dashboard',
-      description: 'System overview and real-time statistics',
+      description: 'View overall platform metrics including requests, cost, token usage, user activity, and usage trends.',
       apiKeys: 'API Keys',
       accounts: 'Accounts',
       users: 'Users',
@@ -1772,9 +1772,9 @@ export default {
     },
 
     affiliates: {
-      invitesDescription: 'View site-wide inviter and invitee relationships',
-      rebatesDescription: 'View recharge orders that generated affiliate rebates',
-      transfersDescription: 'View affiliate quota transfers into account balance',
+      invitesDescription: 'View the invitation chain including inviters, invitees, and accumulated rebates per inviter.',
+      rebatesDescription: 'Audit recharge orders that generated rebates, including rebate amounts, rates, and payout status.',
+      transfersDescription: 'Track rebate withdrawal records and the status of quota-to-balance conversions.',
       errors: {
         loadFailed: 'Failed to load affiliate records'
       },
@@ -1814,10 +1814,16 @@ export default {
       }
     },
 
+    paymentAdmin: {
+      dashboardDescription: 'Review payment revenue overview, channel distribution, top spenders, and recent order trends.',
+      ordersDescription: 'Search payment orders and handle cancellations, retries, refunds, and fulfillment issues.',
+      plansDescription: 'Configure sellable subscription plans with pricing, validity, group bindings, and listing status.',
+    },
+
     // Users
     users: {
       title: 'User Management',
-      description: 'Manage users and their permissions',
+      description: 'Manage all platform users — create, disable, adjust balance, set concurrency, assign group access, and configure platform quotas.',
       createUser: 'Create User',
       editUser: 'Edit User',
       deleteUser: 'Delete User',
@@ -2095,7 +2101,7 @@ export default {
     // Groups
     groups: {
       title: 'Group Management',
-      description: 'Manage API key groups and rate multipliers',
+      description: 'Configure API Key group policies — manage available model platforms, billing multipliers, subscription modes, and account routing scope.',
       searchGroups: 'Search groups...',
       createGroup: 'Create Group',
       editGroup: 'Edit Group',
@@ -2376,7 +2382,7 @@ export default {
     // Channel Management
     channels: {
       title: 'Channel Management',
-      description: 'Manage channels and custom model pricing',
+      description: 'Maintain model channel mappings — manage display names, context windows, and custom billing prices.',
       searchChannels: 'Search channels...',
       createChannel: 'Create Channel',
       editChannel: 'Edit Channel',
@@ -2501,7 +2507,7 @@ export default {
 
     riskControl: {
       title: 'Risk Control',
-      description: 'Configure content moderation and review audit records',
+      description: 'Configure content safety moderation policies and review violation records and audit details.',
       loadFailed: 'Failed to load risk control',
       saveFailed: 'Failed to save content moderation config',
       logsFailed: 'Failed to load audit records',
@@ -2773,7 +2779,7 @@ export default {
     // Channel Monitor
     channelMonitor: {
       title: 'Channel Monitor',
-      description: 'Monitor channel availability, latency and status',
+      description: 'Periodically probe channel availability and response latency to detect unavailable models and trigger alerts.',
       searchPlaceholder: 'Search monitor name...',
       allProviders: 'All Providers',
       allStatus: 'All Status',
@@ -2902,7 +2908,7 @@ export default {
     // Subscriptions
     subscriptions: {
       title: 'Subscription Management',
-      description: 'Manage user subscriptions and quota limits',
+      description: 'Manage user subscription plans — assign subscription groups, adjust validity periods, and reset usage quotas.',
       assignSubscription: 'Assign Subscription',
       adjustSubscription: 'Adjust Subscription',
       revokeSubscription: 'Revoke Subscription',
@@ -3013,7 +3019,7 @@ export default {
     // Accounts
     accounts: {
       title: 'Account Management',
-      description: 'Manage AI platform accounts and credentials',
+      description: 'Manage upstream AI provider account pool — configure credentials, proxies, model mappings, concurrency limits, and scheduling status.',
       createAccount: 'Create Account',
       autoRefresh: 'Auto Refresh',
       enableAutoRefresh: 'Enable auto refresh',
@@ -4175,7 +4181,7 @@ export default {
     // Proxies
     proxies: {
       title: 'Proxy Management',
-      description: 'Manage proxy servers for accounts',
+      description: 'Manage network proxy IP pool — test connectivity and quality, track expiry dates, and review account bindings.',
       createProxy: 'Create Proxy',
       editProxy: 'Edit Proxy',
       deleteProxy: 'Delete Proxy',
@@ -4342,7 +4348,7 @@ export default {
     // Redeem Codes
     redeem: {
       title: 'Redeem Code Management',
-      description: 'Generate and manage redeem codes',
+      description: 'Generate and manage balance top-up, concurrency boost, subscription, and invitation codes — track claim, usage, and expiry status.',
       generateCodes: 'Generate Codes',
       searchCodes: 'Search codes or email...',
       allTypes: 'All Types',
@@ -4442,7 +4448,7 @@ export default {
     // Announcements
     announcements: {
       title: 'Announcements',
-      description: 'Create announcements and target by conditions',
+      description: 'Publish announcements to targeted users, groups, or balance ranges, and track read status.',
       createAnnouncement: 'Create Announcement',
       editAnnouncement: 'Edit Announcement',
       deleteAnnouncement: 'Delete Announcement',
@@ -4516,7 +4522,7 @@ export default {
     // Promo Codes
     promo: {
       title: 'Promo Code Management',
-      description: 'Create and manage registration promo codes',
+      description: 'Manage new user registration reward codes — set bonus amount, usage limits, expiry, and view claim history.',
       createCode: 'Create Promo Code',
       editCode: 'Edit Promo Code',
       deleteCode: 'Delete Promo Code',
@@ -4575,7 +4581,7 @@ export default {
     // Usage Records
     usage: {
       title: 'Usage Records',
-      description: 'View and manage all user usage records',
+      description: 'Trace all request costs and failures by user, API Key, upstream account, model, and time range.',
       userFilter: 'User',
       searchUserPlaceholder: 'Search user by email...',
       searchApiKeyPlaceholder: 'Search API key by name...',
@@ -4651,7 +4657,7 @@ export default {
     // Ops Monitoring
     ops: {
       title: 'Ops Monitoring',
-      description: 'Operational monitoring and troubleshooting',
+      description: 'Monitor system health — track error rates, account switch frequency, health metrics, and alert events.',
       // Dashboard
       systemHealth: 'System Health',
       overview: 'Overview',
@@ -5405,7 +5411,7 @@ export default {
     // Settings
     settings: {
       title: 'System Settings',
-      description: 'Manage registration, email verification, default values, and SMTP settings',
+      description: 'Configure global platform policies including registration, email verification, default quotas, SMTP mail, and security settings.',
       tabs: {
         general: 'General',
         agreement: 'Agreement',

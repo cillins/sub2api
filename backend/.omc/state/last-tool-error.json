@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd backend && go mod download 2>&1 | tail -5 && echo \\\"---RETRY WIRE---\\\" && go generate ./cmd/server 2>&1 | tail -10\",\"timeout\":300000,\"description\":\"Download missing module and retry wir...",
+  "error": "Exit code 1\n(eval):cd:1: no such file or directory: backend",
+  "timestamp": "2026-06-08T17:03:16.474Z",
+  "retry_count": 1
+}

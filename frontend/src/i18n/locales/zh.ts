@@ -1434,7 +1434,7 @@ export default {
     // Dashboard
     dashboard: {
       title: '管理控制台',
-      description: '系统概览与统计数据',
+      description: '查看平台整体运营数据，包括请求量、成本、Token 消耗、用户活跃度和用量趋势。',
       apiKeys: 'API 密钥',
       totalApiKeys: 'API 密钥总数',
       activeApiKeys: '活跃密钥',
@@ -1793,9 +1793,9 @@ export default {
     },
 
     affiliates: {
-      invitesDescription: '查看全站邀请关系和被邀请用户累计返利',
-      rebatesDescription: '查看每一笔产生返利的充值订单',
-      transfersDescription: '查看返利额度转入账户余额的提取流水',
+      invitesDescription: '查看邀请关系链，包括邀请人、被邀请用户及每位邀请人的累计返利金额。',
+      rebatesDescription: '核对产生返利的充值订单，查看返利金额、比例和发放状态。',
+      transfersDescription: '追踪返利额度提现为账户余额的转入记录和处理状态。',
       errors: {
         loadFailed: '加载邀请返利记录失败'
       },
@@ -1835,10 +1835,16 @@ export default {
       }
     },
 
+    paymentAdmin: {
+      dashboardDescription: '查看支付收入概览、渠道分布、热门用户消费和近期订单趋势。',
+      ordersDescription: '查询支付订单，处理取消、补单、退款和履约异常等问题。',
+      plansDescription: '配置可售订阅套餐，设置价格、有效期、绑定分组和上架状态。',
+    },
+
     // Users Management
     users: {
       title: '用户管理',
-      description: '管理用户账户和权限',
+      description: '管理平台所有用户，支持创建和禁用用户、调整余额、设置并发数、分配分组权限和配置平台限额。',
       createUser: '创建用户',
       editUser: '编辑用户',
       deleteUser: '删除用户',
@@ -2148,7 +2154,7 @@ export default {
     // Groups Management
     groups: {
       title: '分组管理',
-      description: '管理 API 密钥分组和费率配置',
+      description: '配置 API Key 分组策略，管理可用模型平台、计费倍率、订阅模式和账号调度范围。',
       searchGroups: '搜索分组...',
       createGroup: '创建分组',
       editGroup: '编辑分组',
@@ -2453,7 +2459,7 @@ export default {
     // Channel Management
     channels: {
       title: '渠道管理',
-      description: '管理渠道和自定义模型定价',
+      description: '维护模型渠道映射，管理渠道展示名称、上下文窗口和自定义计费价格。',
       searchChannels: '搜索渠道...',
       createChannel: '创建渠道',
       editChannel: '编辑渠道',
@@ -2578,7 +2584,7 @@ export default {
 
     riskControl: {
       title: '风控中心',
-      description: '配置内容审计策略并查看审核记录',
+      description: '配置请求内容安全审核策略，查看违规记录和审核详情。',
       loadFailed: '加载风控中心失败',
       saveFailed: '保存内容审计配置失败',
       logsFailed: '加载审核记录失败',
@@ -2850,7 +2856,7 @@ export default {
     // Channel Monitor
     channelMonitor: {
       title: '渠道监控',
-      description: '监测各渠道的可用性、延迟和状态',
+      description: '定时检测渠道可用性和响应延迟，提前发现不可用模型并自动告警。',
       searchPlaceholder: '搜索监控名称...',
       allProviders: '全部供应商',
       allStatus: '全部状态',
@@ -2979,7 +2985,7 @@ export default {
     // Subscriptions Management
     subscriptions: {
       title: '订阅管理',
-      description: '管理用户订阅和配额限制',
+      description: '管理用户订阅套餐，支持分配订阅分组、调整有效期和重置用量配额。',
       assignSubscription: '分配订阅',
       adjustSubscription: '调整订阅',
       revokeSubscription: '撤销订阅',
@@ -3089,7 +3095,7 @@ export default {
     // Accounts Management
     accounts: {
       title: '账号管理',
-      description: '管理 AI 平台账号和 Cookie',
+      description: '管理上游 AI 服务商账号池，配置凭证、代理、模型映射、并发限制和调度状态。',
       createAccount: '添加账号',
       autoRefresh: '自动刷新',
       enableAutoRefresh: '启用自动刷新',
@@ -4267,7 +4273,7 @@ export default {
     // Proxies Management
     proxies: {
       title: 'IP管理',
-      description: '管理代理服务器配置',
+      description: '管理网络代理 IP 池，检测连通性和质量，追踪有效期和账号绑定关系。',
       createProxy: '添加代理',
       editProxy: '编辑代理',
       deleteProxy: '删除代理',
@@ -4463,7 +4469,7 @@ export default {
     // Redeem Codes Management
     redeem: {
       title: '兑换码管理',
-      description: '生成和管理兑换码',
+      description: '生成和管理余额充值、并发扩容、订阅和邀请码，追踪领取、使用和过期状态。',
       generateCodes: '生成兑换码',
       columns: {
         code: '兑换码',
@@ -4595,7 +4601,7 @@ export default {
     // Announcements
     announcements: {
       title: '公告管理',
-      description: '创建公告并按条件投放',
+      description: '向指定用户、分组或余额区间发布公告，并追踪阅读情况。',
       createAnnouncement: '创建公告',
       editAnnouncement: '编辑公告',
       deleteAnnouncement: '删除公告',
@@ -4669,7 +4675,7 @@ export default {
     // Promo Codes
     promo: {
       title: '优惠码管理',
-      description: '创建和管理注册优惠码',
+      description: '管理新用户注册奖励码，设置赠送金额、可用次数、有效期和查看领取记录。',
       createCode: '创建优惠码',
       editCode: '编辑优惠码',
       deleteCode: '删除优惠码',
@@ -4728,7 +4734,7 @@ export default {
     // Usage Records
     usage: {
       title: '使用记录',
-      description: '查看和管理所有用户的使用记录',
+      description: '按用户、API Key、上游账号、模型和时间追踪所有请求的成本与失败详情。',
       userFilter: '用户',
       searchUserPlaceholder: '按邮箱搜索用户...',
       searchApiKeyPlaceholder: '按名称搜索 API 密钥...',
@@ -4804,7 +4810,7 @@ export default {
     // Ops Monitoring
     ops: {
       title: '运维监控',
-      description: '运维监控与排障',
+      description: '监控系统运行状态，查看错误率、账号切换频率、健康指标和告警事件。',
       // Dashboard
       systemHealth: '系统健康',
       overview: '概览',
@@ -5565,7 +5571,7 @@ export default {
     // Settings
     settings: {
       title: '系统设置',
-      description: '管理注册、邮箱验证、默认值和 SMTP 设置',
+      description: '配置平台全局策略，包括注册开放、邮箱验证、默认配额、SMTP 邮件和安全设置。',
       tabs: {
         general: '通用设置',
         agreement: '登录条款',

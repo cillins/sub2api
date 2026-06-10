@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1780966498704,
+  "projectRoot": "/Users/cillin/Documents/Code/MuleRun/sub2api/backend",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Go",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "go.mod"
+        ]
+      },
+      {
+        "name": "C/C++",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "Makefile"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "go",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "make build",
+    "testCommand": "make test",
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "cmd": {
+      "path": "cmd",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1780966498694,
+      "keyFiles": []
+    },
+    "data": {
+      "path": "data",
+      "purpose": "Data files",
+      "fileCount": 3,
+      "lastAccessed": 1780966498695,
+      "keyFiles": [
+        "config.yaml",
+        "model_pricing.json",
+        "model_pricing.sha256"
+      ]
+    },
+    "ent": {
+      "path": "ent",
+      "purpose": null,
+      "fileCount": 182,
+      "lastAccessed": 1780966498695,
+      "keyFiles": [
+        "account.go",
+        "account_create.go",
+        "account_delete.go",
+        "account_query.go",
+        "account_update.go"
+      ]
+    },
+    "internal": {
+      "path": "internal",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1780966498695,
+      "keyFiles": []
+    },
+    "migrations": {
+      "path": "migrations",
+      "purpose": "Database migrations",
+      "fileCount": 186,
+      "lastAccessed": 1780966498696,
+      "keyFiles": [
+        "001_init.sql",
+        "002_account_type_migration.sql",
+        "003_subscription.sql",
+        "004_add_redeem_code_notes.sql",
+        "005_schema_parity.sql"
+      ]
+    },
+    "resources": {
+      "path": "resources",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1780966498696,
+      "keyFiles": []
+    },
+    "data/pages": {
+      "path": "data/pages",
+      "purpose": "Page components",
+      "fileCount": 0,
+      "lastAccessed": 1780966498696,
+      "keyFiles": []
+    },
+    "internal/config": {
+      "path": "internal/config",
+      "purpose": "Configuration files",
+      "fileCount": 5,
+      "lastAccessed": 1780966498696,
+      "keyFiles": [
+        "config.go",
+        "config_test.go",
+        "validate_dingtalk.go"
+      ]
+    },
+    "internal/middleware": {
+      "path": "internal/middleware",
+      "purpose": "Middleware",
+      "fileCount": 3,
+      "lastAccessed": 1780966498696,
+      "keyFiles": [
+        "rate_limiter.go",
+        "rate_limiter_integration_test.go",
+        "rate_limiter_test.go"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}
