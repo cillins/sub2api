@@ -174,10 +174,11 @@
                   {{ t('home.features.unifiedGatewayDesc') }}
                 </p>
               </div>
-              <div class="flex shrink-0 items-center gap-2 text-sm text-gray-500 dark:text-dark-400">
+              <div class="flex flex-wrap shrink-0 items-center gap-2 text-sm text-gray-500 dark:text-dark-400">
                 <span class="rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/20 dark:text-blue-400">Claude</span>
                 <span class="rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">GPT</span>
                 <span class="rounded-md bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 dark:bg-sky-900/20 dark:text-sky-400">Gemini</span>
+                <span class="rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">DeepSeek</span>
               </div>
             </div>
           </div>
@@ -224,7 +225,7 @@
           </span>
           <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
             <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
-            GPT
+            {{ t('home.providers.gpt') }}
           </span>
           <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
             <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
@@ -233,6 +234,18 @@
           <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
             <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
             {{ t('home.providers.antigravity') }}
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
+            <span class="h-1.5 w-1.5 rounded-full bg-purple-500"></span>
+            {{ t('home.providers.deepseek') }}
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+            {{ t('home.providers.qwen') }}
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 dark:border-dark-700 dark:bg-dark-800 dark:text-dark-200">
+            <span class="h-1.5 w-1.5 rounded-full bg-cyan-500"></span>
+            {{ t('home.providers.seedance') }}
           </span>
           <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200/50 bg-white/50 px-4 py-2 text-sm text-gray-400 dark:border-dark-700/50 dark:bg-dark-800/50 dark:text-dark-500">
             {{ t('home.providers.more') }}

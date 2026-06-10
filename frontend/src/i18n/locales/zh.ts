@@ -95,8 +95,12 @@ export default {
       supported: '已支持',
       soon: '即将推出',
       claude: 'Claude',
+      gpt: 'GPT',
       gemini: 'Gemini',
       antigravity: 'Antigravity',
+      deepseek: 'DeepSeek',
+      qwen: 'Qwen',
+      seedance: 'Seedance',
       more: '更多'
     },
     // CTA 区块

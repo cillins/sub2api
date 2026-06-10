@@ -95,8 +95,12 @@ export default {
       supported: 'Supported',
       soon: 'Soon',
       claude: 'Claude',
+      gpt: 'GPT',
       gemini: 'Gemini',
       antigravity: 'Antigravity',
+      deepseek: 'DeepSeek',
+      qwen: 'Qwen',
+      seedance: 'Seedance',
       more: 'More'
     },
     // CTA section
